@@ -21,11 +21,13 @@ export default {
     </v-row>
     <v-row>
       <v-col cols="6" class="mx-auto">
-        <v-btn
-            size="large"
-            block>
-          회원가입
-        </v-btn>
+        <router-link to="/signup">
+          <v-btn
+              size="large"
+              block>
+            회원가입
+          </v-btn>
+        </router-link>
       </v-col>
     </v-row>
   </v-container>
