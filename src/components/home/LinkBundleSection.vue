@@ -1,6 +1,9 @@
 <script>
+import AddLinkBundleButton from "@/components/home/dialog/AddLinkBundleButton.vue";
+
 export default {
   name: "LinkBundleSection",
+  components: {AddLinkBundleButton},
   data() {
     return {
       linkBundles: [
@@ -24,7 +27,7 @@ export default {
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
       <div class="text-h5">링크 묶음</div>
-      <v-btn density="compact" icon="mdi-plus"></v-btn>
+      <AddLinkBundleButton/>
     </div>
     <div class="d-flex flex-wrap ga-2">
       <v-btn v-for="n in linkBundles"
