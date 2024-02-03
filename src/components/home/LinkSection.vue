@@ -21,6 +21,11 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    moveToLink(link) {
+      window.open(link.url);
+    }
   }
 }
 </script>
@@ -32,7 +37,7 @@ export default {
       <v-btn density="compact" icon="mdi-plus"></v-btn>
     </div>
     <div class="d-flex flex-wrap ga-2">
-      <v-card v-for="n in links" :key="n" hover>
+      <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
         <v-card-item>
           <v-card-title>
             {{ n.description }}
