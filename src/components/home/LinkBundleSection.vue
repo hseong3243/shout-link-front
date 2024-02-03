@@ -1,0 +1,43 @@
+<script>
+import AddLinkBundleButton from "@/components/home/dialog/AddLinkBundleButton.vue";
+
+export default {
+  name: "LinkBundleSection",
+  components: {AddLinkBundleButton},
+  data() {
+    return {
+      linkBundles: [
+        {
+          linkBundleId: 1,
+          description: "기본 분류",
+          isDefault: true
+        },
+        {
+          linkBundleId: 2,
+          description: "관심있는 것들",
+          isDefault: false
+        }
+      ]
+    }
+  }
+}
+</script>
+
+<template>
+  <div class="d-flex flex-column">
+    <div class="d-flex justify-space-between py-5">
+      <div class="text-h5">링크 묶음</div>
+      <AddLinkBundleButton/>
+    </div>
+    <div class="d-flex flex-wrap ga-2">
+      <v-btn v-for="n in linkBundles"
+             :key="n">
+        {{ n.description }}
+      </v-btn>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>
