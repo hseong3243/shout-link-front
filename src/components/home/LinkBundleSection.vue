@@ -21,8 +21,8 @@ export default {
 </script>
 
 <template>
-  <div class="d-flex flex-column ga-2 mt-2">
-    <div class="d-flex ga-2">
+  <div class="d-flex flex-column">
+    <div class="d-flex justify-space-between py-5">
       <div class="text-h5">링크 묶음</div>
       <v-btn density="compact" icon="mdi-plus"></v-btn>
     </div>
