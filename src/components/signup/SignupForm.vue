@@ -1,4 +1,7 @@
 <script>
+import axios from "axios";
+import router from "@/router/router.js";
+
 export default {
   name: "SignupForm",
   data() {
@@ -8,6 +11,30 @@ export default {
         password: "",
         nickname: "",
       }
+    }
+  },
+  methods: {
+    createMemberApiCall() {
+      axios.post('/api/members', {
+        email: this.createMemberRequest.email,
+        password: this.createMemberRequest.password,
+        nickname: this.createMemberRequest.nickname
+      })
+      .then((response) => {
+        router.replace("/login");
+      })
+      .catch((error) => {
+        const response = error.response.data;
+        const errorCode = response.errorCode;
+        switch (errorCode) {
+          case 'SL901':
+            alert('중복된 이메일입니다!')
+            break;
+          case 'SL902':
+            alert('중복된 닉네임입니다!')
+            break;
+        }
+      })
     }
   }
 }
@@ -31,6 +58,7 @@ export default {
         variant="solo">
     </v-text-field>
     <v-btn
+        @click="createMemberApiCall"
         size="large"
         block>
       회원가입
