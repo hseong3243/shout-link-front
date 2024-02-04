@@ -1,11 +1,23 @@
 <script>
+import axios from "axios";
+import {useAuthStore} from "@/store/AuthStore.js";
+
 export default {
+  setup() {
+    const authStore = useAuthStore();
+    return {authStore}
+  },
   data() {
     return {
       loginRequest: {
         email: "",
         password: "",
       }
+    }
+  },
+  methods: {
+    login() {
+      this.authStore.loginApiCall(this.loginRequest.email, this.loginRequest.password);
     }
   }
 }
@@ -24,6 +36,7 @@ export default {
         variant="solo">
     </v-text-field>
     <v-btn
+        @click="login"
         size="large"
         block>
       로그인
