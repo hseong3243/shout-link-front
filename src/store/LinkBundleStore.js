@@ -12,6 +12,9 @@ export const useLinkBundleStore = defineStore('linkBundle', {
   getters: {
     getSelectedLinkBundle(state) {
       return state.linkBundle;
+    },
+    getLinkBundles(state) {
+      return state.linkBundles;
     }
   },
   actions: {
