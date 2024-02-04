@@ -1,9 +1,14 @@
 <script>
 import AddLinkButton from "@/components/home/dialog/AddLinkButton.vue";
+import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
 
 export default {
   name: "LinkSection",
   components: {AddLinkButton},
+  setup() {
+    const linkBundleStore = useLinkBundleStore();
+    return { linkBundleStore }
+  },
   data() {
     return {
       linkBundle: {
@@ -24,6 +29,11 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    this.linkBundleStore.$subscribe((mutation, state) => {
+      this.linkBundle = state.linkBundle;
+    })
   },
   methods: {
     moveToLink(link) {
