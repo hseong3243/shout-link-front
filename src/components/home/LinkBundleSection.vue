@@ -1,6 +1,7 @@
 <script>
 import AddLinkBundleButton from "@/components/home/dialog/AddLinkBundleButton.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
+import api from "@/axios/index.js";
 
 export default {
   name: "LinkBundleSection",
@@ -22,7 +23,19 @@ export default {
           description: "관심있는 것들",
           isDefault: false
         }
-      ]
+      ],
+      dataReady: false
+    }
+  },
+  mounted() {
+    this.findLinkBundlesApiCall()
+    this.dataReady = true;
+  },
+  methods: {
+    async findLinkBundlesApiCall() {
+      const axiosResponse = await api.get('/api/link-bundles');
+      const data = axiosResponse.data;
+      this.linkBundles = data.linkBundles;
     }
   }
 }
@@ -34,7 +47,7 @@ export default {
       <div class="text-h5">링크 묶음</div>
       <AddLinkBundleButton v-if="authStore.isLogin"/>
     </div>
-    <div class="d-flex flex-wrap ga-2">
+    <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-btn v-for="n in linkBundles"
              :key="n">
         {{ n.description }}
