@@ -5,7 +5,7 @@ import router from "@/router/router.js";
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     accessToken: "",
-    memberId: ""
+    memberId: 0
   }),
   getters: {
     getBearerToken(state) {
@@ -13,6 +13,9 @@ export const useAuthStore = defineStore('auth', {
     },
     getMemberId(state) {
       return state.memberId;
+    },
+    isLogin(state) {
+      return state.accessToken.length !== 0;
     }
   },
   actions: {
@@ -36,6 +39,11 @@ export const useAuthStore = defineStore('auth', {
             break;
         }
       })
+    },
+    logout() {
+      this.accessToken = "";
+      this.memberId = 0;
     }
-  }
+  },
+  persist: true
 });
