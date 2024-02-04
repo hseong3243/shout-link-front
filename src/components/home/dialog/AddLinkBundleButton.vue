@@ -1,8 +1,9 @@
 <script>
 
+import api from "@/axios/index.js";
+
 export default {
   name: "AddLinkBundleButton",
-  methods: {},
   data() {
     return {
       dialog: false,
@@ -11,7 +12,22 @@ export default {
         isDefault: false,
       }
     }
-  }
+  },
+  methods: {
+    createLinkBundleApiCall() {
+      api.post('/api/link-bundles', {
+        description: this.createLinkBundleRequest.description,
+        isDefault: this.createLinkBundleRequest.isDefault,
+      })
+      .then((response) => {
+        alert('새로운 링크 분류가 등록되었습니다!')
+        this.dialog = false;
+      })
+      .catch((error) => {
+
+      })
+    }
+  },
 }
 </script>
 
@@ -40,8 +56,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn>추가</v-btn>
-          <!--          <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>-->
+          <v-btn @click="createLinkBundleApiCall">추가</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

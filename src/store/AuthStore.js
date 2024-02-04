@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
-import axios from "axios";
 import router from "@/router/router.js";
+import api from "@/axios/index.js";
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -20,17 +20,19 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     loginApiCall(email, password) {
-      axios.post('/api/login', {
+      api.post('/api/login', {
         email: email,
         password: password,
       })
       .then((response) => {
+        console.log(response);
         const data = response.data;
         this.accessToken = data.accessToken;
         this.memberId = data.memberId;
         router.replace('/');
       })
       .catch((error) => {
+        console.log(error)
         const response = error.response.data;
         const errorCode = response.errorCode;
         switch (errorCode) {

@@ -1,6 +1,6 @@
 <script>
-import axios from "axios";
 import router from "@/router/router.js";
+import api from "@/axios/index.js";
 
 export default {
   name: "SignupForm",
@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     createMemberApiCall() {
-      axios.post('/api/members', {
+      api.post('/api/members', {
         email: this.createMemberRequest.email,
         password: this.createMemberRequest.password,
         nickname: this.createMemberRequest.nickname
