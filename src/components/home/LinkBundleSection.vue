@@ -1,9 +1,14 @@
 <script>
 import AddLinkBundleButton from "@/components/home/dialog/AddLinkBundleButton.vue";
+import {useAuthStore} from "@/store/AuthStore.js";
 
 export default {
   name: "LinkBundleSection",
   components: {AddLinkBundleButton},
+  setup() {
+    const authStore = useAuthStore();
+    return { authStore }
+  },
   data() {
     return {
       linkBundles: [
@@ -27,7 +32,7 @@ export default {
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
       <div class="text-h5">링크 묶음</div>
-      <AddLinkBundleButton/>
+      <AddLinkBundleButton v-if="authStore.isLogin"/>
     </div>
     <div class="d-flex flex-wrap ga-2">
       <v-btn v-for="n in linkBundles"
