@@ -1,7 +1,6 @@
 import {createApp} from 'vue'
 import router from "@/router/router.js";
 import App from "@/App.vue";
-import axios from "axios";
 
 // Vuetify
 import 'vuetify/styles'
@@ -19,9 +18,6 @@ const vuetify = createVuetify({
   components,
   directives
 });
-
-//axios
-axios.defaults.baseURL = 'https://shoutlink.me'
 
 //pinia
 const pinia = createPinia();
