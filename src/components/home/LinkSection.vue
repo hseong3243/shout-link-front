@@ -2,13 +2,15 @@
 import AddLinkButton from "@/components/home/dialog/AddLinkButton.vue";
 import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
 import api from "@/axios/index.js";
+import {useAuthStore} from "@/store/AuthStore.js";
 
 export default {
   name: "LinkSection",
   components: {AddLinkButton},
   setup() {
+    const authStore = useAuthStore();
     const linkBundleStore = useLinkBundleStore();
-    return { linkBundleStore }
+    return { authStore, linkBundleStore }
   },
   data() {
     return {
@@ -59,7 +61,7 @@ export default {
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
       <div class="text-h5">{{ linkBundle.description }}</div>
-      <AddLinkButton @addLinkEvent="findLinksApiCall"/>
+      <AddLinkButton @addLinkEvent="findLinksApiCall" v-if="this.authStore.isLogin"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
