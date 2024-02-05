@@ -8,6 +8,7 @@ export default {
     const linkBundleStore = useLinkBundleStore();
     return {linkBundleStore};
   },
+  emits: ['addLinkEvent'],
   data() {
     return {
       dialog: false,
@@ -36,6 +37,7 @@ export default {
       .then((response) => {
         alert('새로운 링크가 추가되었습니다!');
         this.dialog = false;
+        this.$emit('addLinkEvent');
       })
       .catch((error) => {
 

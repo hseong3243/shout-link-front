@@ -59,7 +59,7 @@ export default {
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
       <div class="text-h5">{{ linkBundle.description }}</div>
-      <AddLinkButton/>
+      <AddLinkButton @addLinkEvent="findLinksApiCall"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
