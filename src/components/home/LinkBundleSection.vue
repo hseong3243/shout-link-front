@@ -48,7 +48,7 @@ export default {
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
       <div class="text-h5">링크 묶음</div>
-      <AddLinkBundleButton v-if="authStore.isLogin"/>
+      <AddLinkBundleButton @addLinkBundleEvent="findLinkBundlesApiCall" v-if="authStore.isLogin"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-btn
