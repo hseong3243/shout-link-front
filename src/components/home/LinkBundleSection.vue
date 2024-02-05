@@ -2,13 +2,15 @@
 import AddLinkBundleButton from "@/components/home/dialog/AddLinkBundleButton.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
 import api from "@/axios/index.js";
+import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
 
 export default {
   name: "LinkBundleSection",
   components: {AddLinkBundleButton},
   setup() {
     const authStore = useAuthStore();
-    return { authStore }
+    const linkBundleStore = useLinkBundleStore();
+    return {authStore, linkBundleStore}
   },
   data() {
     return {
@@ -36,6 +38,7 @@ export default {
       const axiosResponse = await api.get('/api/link-bundles');
       const data = axiosResponse.data;
       this.linkBundles = data.linkBundles;
+      this.linkBundleStore.setLinkBundles(this.linkBundles);
     }
   }
 }
@@ -45,11 +48,13 @@ export default {
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
       <div class="text-h5">링크 묶음</div>
-      <AddLinkBundleButton v-if="authStore.isLogin"/>
+      <AddLinkBundleButton @addLinkBundleEvent="findLinkBundlesApiCall" v-if="authStore.isLogin"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
-      <v-btn v-for="n in linkBundles"
-             :key="n">
+      <v-btn
+          v-for="n in linkBundles"
+          :key="n"
+          @click="linkBundleStore.selectLinkBundle(n)">
         {{ n.description }}
       </v-btn>
     </div>

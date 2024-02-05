@@ -4,6 +4,7 @@ import api from "@/axios/index.js";
 
 export default {
   name: "AddLinkBundleButton",
+  emits: ['addLinkBundleEvent'],
   data() {
     return {
       dialog: false,
@@ -22,6 +23,7 @@ export default {
       .then((response) => {
         alert('새로운 링크 분류가 등록되었습니다!')
         this.dialog = false;
+        this.$emit('addLinkBundleEvent');
       })
       .catch((error) => {
 

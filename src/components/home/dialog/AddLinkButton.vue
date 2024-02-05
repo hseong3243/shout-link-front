@@ -1,21 +1,47 @@
 <script>
+import api from "@/axios/index.js";
+import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
+
 export default {
   name: "AddLinkButton",
+  setup() {
+    const linkBundleStore = useLinkBundleStore();
+    return {linkBundleStore};
+  },
+  emits: ['addLinkEvent'],
   data() {
     return {
       dialog: false,
-      linkBundles: [
-        {
-          linkBundleId: 1,
-          description: "기본 분류",
-          isDefault: true,
-        }
-      ],
+      selectedLinkBundle: {
+        linkBundleId: 1,
+        description: "",
+        isDefault: false,
+      },
       createLinkRequest: {
         linkBundleId: 1,
         description: "",
         url: "",
       }
+    }
+  },
+  mounted() {
+    this.selectedLinkBundle = this.linkBundleStore.getSelectedLinkBundle;
+  },
+  methods: {
+    createLinkApiCall() {
+      api.post('/api/links', {
+        linkBundleId: this.selectedLinkBundle.linkBundleId,
+        url: this.createLinkRequest.url,
+        description: this.createLinkRequest.description
+      })
+      .then((response) => {
+        alert('새로운 링크가 추가되었습니다!');
+        this.dialog = false;
+        this.$emit('addLinkEvent');
+      })
+      .catch((error) => {
+
+      })
     }
   }
 }
@@ -34,8 +60,8 @@ export default {
         <v-card-text>
           <v-form>
             <v-select
-                v-model="createLinkRequest.linkBundleId"
-                :items="linkBundles"
+                v-model="selectedLinkBundle"
+                :items="linkBundleStore.linkBundles"
                 item-title="description"
                 item-value="linkBundleId"
                 label="분류"
@@ -58,7 +84,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn>추가</v-btn>
+          <v-btn @click="createLinkApiCall">추가</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
