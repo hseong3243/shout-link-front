@@ -4,7 +4,7 @@ import router from "@/router/router.js";
 
 const api = axios.create();
 
-api.defaults.baseURL = 'https://shoutlink.me'
+api.defaults.baseURL = 'https://api.shoutlink.me'
 api.defaults.withCredentials = true
 
 api.interceptors.request.use(config => {
