@@ -1,5 +1,6 @@
 <script>
 import {useAuthStore} from "@/store/AuthStore.js";
+import api from "@/axios/index.js";
 
 export default {
   name: "HubSection",
@@ -9,7 +10,8 @@ export default {
   },
   data() {
     return {
-      dataReady: true,
+      dataReady: false,
+      page: 0,
       hubs: [{
         hubId: 1,
         masterId: 1,
@@ -29,10 +31,26 @@ export default {
       hasNext: false,
     }
   },
+  mounted() {
+    this.findHubsApiCall();
+    this.dataReady = true;
+  },
   methods: {
     moveToHub(hub) {
 
     },
+    async findHubsApiCall() {
+      const axiosResponse = await api.get('/api/hubs', {
+        params: {
+          page: this.page,
+          size: 20,
+        }
+      });
+      const data = axiosResponse.data;
+      this.hubs = data.hubs;
+      this.totalElements = data.totalElements;
+      this.hasNext = data.hasNext;
+    }
   }
 }
 </script>
