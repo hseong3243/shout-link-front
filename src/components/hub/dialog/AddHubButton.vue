@@ -1,4 +1,6 @@
 <script>
+import api from "@/axios/index.js";
+
 export default {
   name: "AddHubButton",
   data() {
@@ -13,6 +15,18 @@ export default {
   },
   methods: {
     createHubApiCall() {
+      api.post('/api/hubs', {
+        name: this.createHubRequest.name,
+        description: this.createHubRequest.description,
+        isPrivate: this.createHubRequest.isPrivate
+      })
+      .then((response) => {
+        alert('새로운 허브가 추가되었습니다!');
+        this.dialog = false;
+      })
+      .catch((error) => {
+
+      })
 
     }
   }
@@ -45,7 +59,7 @@ export default {
             </v-text-field>
             <v-checkbox
                 v-model="createHubRequest.isPrivate"
-                label="허브 공개 여부"></v-checkbox>
+                label="허브 비공개"></v-checkbox>
           </v-form>
         </v-card-text>
         <v-card-actions>
