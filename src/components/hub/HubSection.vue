@@ -1,9 +1,11 @@
 <script>
 import {useAuthStore} from "@/store/AuthStore.js";
 import api from "@/axios/index.js";
+import AddHubButton from "@/components/hub/dialog/AddHubButton.vue";
 
 export default {
   name: "HubSection",
+  components: {AddHubButton},
   setup() {
     const authStore = useAuthStore();
     return {authStore}
@@ -79,7 +81,7 @@ export default {
     <div class="d-flex mt-5 ga-2">
       <v-btn v-if="hasNext">더 보기</v-btn>
       <v-btn disabled v-if="!hasNext">더 보기</v-btn>
-      <v-btn v-if="authStore.isLogin">허브 만들기</v-btn>
+      <AddHubButton v-if="authStore.isLogin"/>
     </div>
   </div>
 </template>
