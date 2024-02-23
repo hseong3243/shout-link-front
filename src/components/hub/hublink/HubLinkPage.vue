@@ -1,7 +1,6 @@
 <script>
 import HubLinkBundleSection from "@/components/hub/hublink/HubLinkBundleSection.vue";
 import HubLinkSection from "@/components/hub/hublink/HubLinkSection.vue";
-import api from "@/axios/index.js";
 
 export default {
   name: "HubLinkPage",
@@ -27,7 +26,7 @@ export default {
         <HubLinkBundleSection :hub-id="hubId"/>
       </v-col>
       <v-col>
-        <HubLinkSection/>
+        <HubLinkSection :hub-id="hubId"/>
       </v-col>
       <v-col cols="3">
 
