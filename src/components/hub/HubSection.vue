@@ -2,6 +2,7 @@
 import {useAuthStore} from "@/store/AuthStore.js";
 import api from "@/axios/index.js";
 import AddHubButton from "@/components/hub/dialog/AddHubButton.vue";
+import router from "@/router/router.js";
 
 export default {
   name: "HubSection",
@@ -39,7 +40,7 @@ export default {
   },
   methods: {
     moveToHub(hub) {
-
+      router.push('/hub/' + hub.hubId);
     },
     async findHubsApiCall() {
       const axiosResponse = await api.get('/api/hubs', {
@@ -66,7 +67,6 @@ export default {
           <v-card-title>
             {{ hub.name }}
             <v-icon
-                end
                 size="x-small"
                 icon="mdi-lock"
                 v-if="hub.isPrivate"
