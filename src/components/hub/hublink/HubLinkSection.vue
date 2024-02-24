@@ -1,15 +1,20 @@
 <script>
 import api from "@/axios/index.js";
 import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
+import AddHubLinkButton from "@/components/hub/hublink/dialog/AddHubLinkButton.vue";
+import {useAuthStore} from "@/store/AuthStore.js";
 
 export default {
   name: "HubLinkSection",
+  components: {AddHubLinkButton},
   props: {
-    hubId: String
+    hubId: String,
+    hub: Object,
   },
   setup() {
+    const authStore = useAuthStore();
     const linkBundleStore = useLinkBundleStore();
-    return {linkBundleStore}
+    return {authStore, linkBundleStore}
   },
   data() {
     return {
@@ -30,6 +35,7 @@ export default {
           url: "https://github.com/hseong3243"
         }
       ],
+      isHubMaster: false,
       dataReady: false
     }
   },
@@ -38,6 +44,7 @@ export default {
       this.linkBundle = state.linkBundle;
       this.findHubLinksApiCall();
     })
+    this.checkIsHubMaster();
     this.dataReady = true;
   },
   methods: {
@@ -51,15 +58,22 @@ export default {
         }
       });
       this.links = axiosResponse.data.links;
+    },
+    checkIsHubMaster() {
+      this.isHubMaster = this.authStore.getMemberId === this.hub.masterId;
     }
   }
 }
 </script>
 
 <template>
-  <div>
-    <div class="d-flex flex-column">
+  <div class="d-flex flex-column">
+    <div class="d-flex justify-space-between align-center">
       <div class="text-h6 py-6">{{ linkBundle.description }}</div>
+      <AddHubLinkButton
+          :hub-id="hubId"
+          @addHubLinkEvent="findHubLinksApiCall"
+      v-if="isHubMaster"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
