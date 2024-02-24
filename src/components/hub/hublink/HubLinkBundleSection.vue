@@ -65,7 +65,8 @@ export default {
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-btn
           v-for="n in linkBundles"
-          :key="n">
+          :key="n"
+          @click="linkBundleStore.selectLinkBundle(n)">
         {{ n.description }}
       </v-btn>
     </div>
