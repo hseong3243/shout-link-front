@@ -47,7 +47,7 @@ export default {
     </v-row>
     <v-row>
       <v-col cols="3">
-        <HubLinkBundleSection :hub-id="hubId"/>
+        <HubLinkBundleSection :hub-id="hubId" :hub="hub"/>
       </v-col>
       <v-col>
         <HubLinkSection :hub-id="hubId"/>
