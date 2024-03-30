@@ -6,6 +6,7 @@ export const useDomainStore = defineStore('domain', {
     domains: [],
     totalElements: 0,
     hasNext: false,
+    domain: {},
     keyword: "",
   }),
   getters: {
@@ -18,14 +19,20 @@ export const useDomainStore = defineStore('domain', {
     getHasNext(state) {
       return state.hasNext;
     },
+    getDomain(state) {
+      return state.domain;
+    },
     getKeyword(state) {
       return state.keyword;
     }
   },
   actions: {
+    findDomainsApiCallUsingPreviousKeyword(pageInfo) {
+      this.findDomainsApiCall(this.keyword, pageInfo);
+    },
     findDomainsApiCall(keyword, pageInfo) {
       this.keyword = keyword;
-      
+
       api.get("/api/domains", {
         params: {
           keyword: keyword,
@@ -38,6 +45,12 @@ export const useDomainStore = defineStore('domain', {
         this.domains = data.domains;
         this.totalElements = data.totalElements;
         this.hasNext = data.hasNext;
+      })
+    },
+    findDomainApiCall(domainId) {
+      api.get(`/api/domains/${domainId}`)
+      .then(response => {
+        this.domain = response.data;
       })
     }
   }
