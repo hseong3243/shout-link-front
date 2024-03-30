@@ -6,8 +6,12 @@ export const useDomainStore = defineStore('domain', {
     domains: [],
     totalElements: 0,
     hasNext: false,
-    domain: {},
+    domain: {
+      domainId: 0,
+      rootDomain: "",
+    },
     keyword: "",
+    isSelected: false,
   }),
   getters: {
     getDomains(state) {
@@ -51,6 +55,7 @@ export const useDomainStore = defineStore('domain', {
       api.get(`/api/domains/${domainId}`)
       .then(response => {
         this.domain = response.data;
+        this.isSelected = true;
       })
     }
   }
