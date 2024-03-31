@@ -1,8 +1,10 @@
 <script>
 import {useAuthStore} from "@/store/AuthStore.js";
+import DomainSearchForm from "@/components/domain/DomainSearchForm.vue";
 
 export default {
   name: "Header",
+  components: {DomainSearchForm},
   setup() {
     const authStore = useAuthStore();
     return { authStore }
@@ -13,6 +15,7 @@ export default {
 <template>
 <div class="d-flex justify-space-between py-2 px-4">
   <h1>Shout Link!</h1>
+  <DomainSearchForm/>
   <div class="d-flex align-center ga-3">
     <router-link to="/">홈</router-link>
     <router-link to="/hub">허브</router-link>

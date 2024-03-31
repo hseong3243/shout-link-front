@@ -2,6 +2,7 @@
 import api from "@/axios/index.js";
 import {debounce} from "lodash";
 import {useDomainStore} from "@/store/DomainStore.js";
+import router from "@/router/router.js";
 
 export default {
   name: "DomainSearchForm",
@@ -27,10 +28,13 @@ export default {
         size: 10
       }
       this.domainStore.findDomainsApiCall(keyword, pageInfo);
+      this.rootDomains = [];
+      router.push('/domain')
     },
     async findRootDomainsApiCall(keyword) {
       if (keyword.length < 1) {
         this.rootDomains = [];
+        return;
       }
       const response = await api.get("/api/domains/search", {
         params: {
@@ -45,18 +49,15 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div
-        class="border rounded elevation-3 search">
-      <input
-          class="search-input"
+  <div class="parent">
+    <div class="border rounded elevation-1 search">
+      <input class="search-input"
+             placeholder="도메인 검색"
           v-model="keyword"
           @keyup.enter="searchDomain(keyword)"/>
     </div>
-    <div
-        class="border rounded elevation-3">
-      <div
-          class="auto-complete"
+    <div class="border rounded elevation-1 drop-down">
+      <div class="auto-complete"
           v-for="rootDomain in rootDomains"
           :key="rootDomain">
         <div class="auto-complete-element"
@@ -69,6 +70,10 @@ export default {
 </template>
 
 <style scoped>
+.parent {
+  position: relative;
+  width: 33%;
+}
 .search {
   height: 50px;
 }
@@ -82,6 +87,13 @@ export default {
 
 .search-input:focus {
   outline: none;
+}
+
+.drop-down {
+  position: absolute;
+  z-index: 10;
+  background-color: white;
+  width: 100%;
 }
 
 .auto-complete {
@@ -98,5 +110,6 @@ export default {
 
 .auto-complete-element:hover {
   background-color: #e5e5e5;
+  cursor: pointer;
 }
 </style>
