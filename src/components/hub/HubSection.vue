@@ -20,7 +20,13 @@ export default {
         masterId: 1,
         name: "공개 허브",
         description: "설명",
-        isPrivate: false
+        isPrivate: false,
+        tags: [
+          {
+            tagId: 1,
+            name: "태그"
+          }
+        ]
       },
         {
           hubId: 2,
@@ -74,6 +80,13 @@ export default {
           </v-card-title>
           <v-card-subtitle>
             {{ hub.description }}
+          </v-card-subtitle>
+          <v-card-subtitle>
+            <div class="d-flex">
+              <div v-for="tag in hub.tags" :key="tag.tagId">
+                #{{tag.name}}
+              </div>
+            </div>
           </v-card-subtitle>
         </v-card-item>
       </v-card>
