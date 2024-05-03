@@ -3,10 +3,11 @@ import api from "@/axios/index.js";
 import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
 import AddHubLinkButton from "@/components/hub/hublink/dialog/AddHubLinkButton.vue";
 import {useAuthStore} from "@/store/AuthStore.js";
+import ShowUrl from "@/components/common/ShowUrl.vue";
 
 export default {
   name: "HubLinkSection",
-  components: {AddHubLinkButton},
+  components: {ShowUrl, AddHubLinkButton},
   props: {
     hubId: String,
     hub: Object,
@@ -18,6 +19,7 @@ export default {
   },
   data() {
     return {
+      showUrl: false,
       linkBundle: {
         linkBundleId: 1,
         description: "기본 분류",
@@ -61,6 +63,9 @@ export default {
     },
     checkIsHubMaster() {
       this.isHubMaster = this.authStore.getMemberId === this.hub.masterId;
+    },
+    changeShowUrl() {
+      this.showUrl = !this.showUrl;
     }
   }
 }
@@ -69,11 +74,14 @@ export default {
 <template>
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between align-center">
-      <div class="text-h6 py-6">{{ linkBundle.description }}</div>
+      <div class="d-flex align-center ga-2">
+        <div class="text-h6 py-6">{{ linkBundle.description }}</div>
+        <ShowUrl @show-url-event="changeShowUrl"/>
+      </div>
       <AddHubLinkButton
           :hub-id="hubId"
           @addHubLinkEvent="findHubLinksApiCall"
-      v-if="isHubMaster"/>
+          v-if="isHubMaster"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
@@ -81,7 +89,7 @@ export default {
           <v-card-title>
             {{ n.description }}
           </v-card-title>
-          <v-card-subtitle>
+          <v-card-subtitle v-if="showUrl">
             {{ n.url }}
           </v-card-subtitle>
         </v-card-item>

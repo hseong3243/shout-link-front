@@ -3,17 +3,19 @@ import AddLinkButton from "@/components/home/dialog/AddLinkButton.vue";
 import {useLinkBundleStore} from "@/store/LinkBundleStore.js";
 import api from "@/axios/index.js";
 import {useAuthStore} from "@/store/AuthStore.js";
+import ShowUrl from "@/components/common/ShowUrl.vue";
 
 export default {
   name: "LinkSection",
-  components: {AddLinkButton},
+  components: {ShowUrl, AddLinkButton},
   setup() {
     const authStore = useAuthStore();
     const linkBundleStore = useLinkBundleStore();
-    return { authStore, linkBundleStore }
+    return {authStore, linkBundleStore}
   },
   data() {
     return {
+      showUrl: false,
       linkBundle: {
         linkBundleId: 1,
         description: "기본 분류",
@@ -52,6 +54,9 @@ export default {
         }
       });
       this.links = axiosResponse.data.links;
+    },
+    changeShowUrl() {
+      this.showUrl = !this.showUrl;
     }
   }
 }
@@ -60,7 +65,10 @@ export default {
 <template>
   <div class="d-flex flex-column">
     <div class="d-flex justify-space-between py-5">
-      <div class="text-h5">{{ linkBundle.description }}</div>
+      <div class="d-flex ga-2 align-center">
+        <div class="text-h5">{{ linkBundle.description }}</div>
+        <ShowUrl @show-url-event="changeShowUrl"/>
+      </div>
       <AddLinkButton @addLinkEvent="findLinksApiCall" v-if="this.authStore.isLogin"/>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
@@ -69,7 +77,7 @@ export default {
           <v-card-title>
             {{ n.description }}
           </v-card-title>
-          <v-card-subtitle>
+          <v-card-subtitle v-if="showUrl">
             {{ n.url }}
           </v-card-subtitle>
         </v-card-item>
