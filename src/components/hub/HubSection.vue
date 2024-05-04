@@ -43,6 +43,9 @@ export default {
     }
   },
   mounted() {
+    this.hubStore.$subscribe((mutation, state) => {
+      this.hubs = state.hubs;
+    })
     this.findHubsApiCall();
     this.dataReady = true;
   },
@@ -52,7 +55,6 @@ export default {
     },
     async findHubsApiCall() {
       await this.hubStore.findHubsApiCall()
-      this.hubs = this.hubStore.getHubs;
     }
   }
 }
