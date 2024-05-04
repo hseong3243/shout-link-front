@@ -3,13 +3,15 @@ import {useAuthStore} from "@/store/AuthStore.js";
 import api from "@/axios/index.js";
 import AddHubButton from "@/components/hub/dialog/AddHubButton.vue";
 import router from "@/router/router.js";
+import {useHubStore} from "@/store/HubStore.js";
 
 export default {
   name: "HubSection",
   components: {AddHubButton},
   setup() {
     const authStore = useAuthStore();
-    return {authStore}
+    const hubStore = useHubStore();
+    return {authStore, hubStore}
   },
   data() {
     return {
@@ -41,6 +43,9 @@ export default {
     }
   },
   mounted() {
+    this.hubStore.$subscribe((mutation, state) => {
+      this.hubs = state.hubs;
+    })
     this.findHubsApiCall();
     this.dataReady = true;
   },
@@ -49,16 +54,7 @@ export default {
       router.push('/hub/' + hub.hubId);
     },
     async findHubsApiCall() {
-      const axiosResponse = await api.get('/api/hubs', {
-        params: {
-          page: this.page,
-          size: 20,
-        }
-      });
-      const data = axiosResponse.data;
-      this.hubs = data.hubs;
-      this.totalElements = data.totalElements;
-      this.hasNext = data.hasNext;
+      await this.hubStore.findHubsApiCall()
     }
   }
 }
@@ -84,7 +80,7 @@ export default {
           <v-card-subtitle>
             <div class="d-flex">
               <div v-for="tag in hub.tags" :key="tag.tagId">
-                #{{tag.name}}
+                #{{ tag.name }}
               </div>
             </div>
           </v-card-subtitle>
