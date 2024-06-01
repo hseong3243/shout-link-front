@@ -66,6 +66,15 @@ export default {
     },
     changeShowUrl() {
       this.showUrl = !this.showUrl;
+    },
+    removePathFromUrl(url) {
+      if(url.startsWith("http://") || url.startsWith("https://")) {
+        url = new URL(url).host;
+      } else {
+        const firstIndexOfSlash = url.indexOf("/");
+        url = url.substring(0, firstIndexOfSlash);
+      }
+      return url;
     }
   }
 }
@@ -89,8 +98,8 @@ export default {
           <v-card-title>
             {{ n.description }}
           </v-card-title>
-          <v-card-subtitle v-if="showUrl">
-            {{ n.url }}
+          <v-card-subtitle>
+            {{ showUrl ? n.url : removePathFromUrl(n.url) }}
           </v-card-subtitle>
         </v-card-item>
       </v-card>
