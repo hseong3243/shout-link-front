@@ -23,8 +23,17 @@ const vuetify = createVuetify({
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
+//dayjs
+import dayjs from "dayjs";
+import 'dayjs/locale/ko';
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.locale('ko')
+dayjs.extend(relativeTime)
+
+
 const app = createApp(App);
 app.use(router)
 app.use(vuetify)
 app.use(pinia)
+app.use(dayjs)
 app.mount('#app')
