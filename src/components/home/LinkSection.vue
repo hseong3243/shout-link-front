@@ -34,7 +34,13 @@ export default {
           url: "https://github.com/hseong3243"
         }
       ],
+      linkOrderBy: 'EXPIRED_AT',
       dataReady: false
+    }
+  },
+  watch: {
+    linkOrderBy() {
+      this.findLinksApiCall()
     }
   },
   mounted() {
@@ -52,6 +58,7 @@ export default {
       const axiosResponse = await api.get('/api/links', {
         params: {
           linkBundleId: this.linkBundle.linkBundleId,
+          linkOrderBy: this.linkOrderBy,
         }
       });
       this.links = axiosResponse.data.links;
@@ -60,7 +67,7 @@ export default {
       this.showUrl = !this.showUrl;
     },
     removePathFromUrl(url) {
-      if(url.startsWith("http://") || url.startsWith("https://")) {
+      if (url.startsWith("http://") || url.startsWith("https://")) {
         url = new URL(url).host;
       } else {
         const firstIndexOfSlash = url.indexOf("/");
@@ -85,14 +92,20 @@ export default {
         <div class="text-h5">{{ linkBundle.description }}</div>
         <ShowUrl @show-url-event="changeShowUrl"/>
       </div>
-      <AddLinkButton @addLinkEvent="findLinksApiCall" v-if="this.authStore.isLogin"/>
+      <div class="d-flex ga-2">
+        <select v-model="linkOrderBy" class="border rounded px-1">
+          <option value="EXPIRED_AT">만료순</option>
+          <option value="CREATED_AT">생성순</option>
+        </select>
+        <AddLinkButton @addLinkEvent="findLinksApiCall" v-if="this.authStore.isLogin"/>
+      </div>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
         <v-card-item>
           <div class="d-flex justify-end" v-if="isValid(n.expiredAt)">
             <p>
-              {{localDateTimeToDDay(n.expiredAt)}}
+              {{ localDateTimeToDDay(n.expiredAt) }}
             </p>
           </div>
           <v-card-title>

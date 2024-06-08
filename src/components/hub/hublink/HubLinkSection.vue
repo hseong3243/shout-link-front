@@ -39,7 +39,13 @@ export default {
         }
       ],
       isHubMaster: false,
+      linkOrderBy: 'EXPIRED_AT',
       dataReady: false
+    }
+  },
+  watch: {
+    linkOrderBy() {
+      this.findHubLinksApiCall()
     }
   },
   mounted() {
@@ -58,6 +64,7 @@ export default {
       const axiosResponse = await api.get(`/api/hubs/${this.hubId}/links`, {
         params: {
           linkBundleId: this.linkBundle.linkBundleId,
+          linkOrderBy: this.linkOrderBy
         }
       });
       this.links = axiosResponse.data.links;
@@ -94,10 +101,16 @@ export default {
         <div class="text-h6 py-6">{{ linkBundle.description }}</div>
         <ShowUrl @show-url-event="changeShowUrl"/>
       </div>
+      <div class="d-flex ga-2">
+        <select v-model="linkOrderBy" class="border rounded px-1">
+          <option value="EXPIRED_AT">만료순</option>
+          <option value="CREATED_AT">생성순</option>
+        </select>
       <AddHubLinkButton
           :hub-id="hubId"
           @addHubLinkEvent="findHubLinksApiCall"
           v-if="isHubMaster"/>
+      </div>
     </div>
     <div class="d-flex flex-wrap ga-2" v-if="dataReady">
       <v-card v-for="n in links" :key="n" @click="moveToLink(n)" hover>
